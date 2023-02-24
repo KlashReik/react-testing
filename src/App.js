@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { useEffect } from "react";
+import SummaryForm from "./pages/summary/SummaryForm";
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
         >
           Learn React
         </a>
+        <SummaryForm></SummaryForm>
       </header>
     </div>
   );
