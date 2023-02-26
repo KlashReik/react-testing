@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ScoopOption from "./ScoopOption";
-import { TopingOption } from "./ToppingOption";
+import TopingOption from "./ToppingOption";
 import { Row } from "react-bootstrap";
 import { AlertBanner } from "../common/AlertBanner";
 import { pricePerItem } from "../../constants";
@@ -14,10 +14,17 @@ export default function Options({ optionType }) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    const controller = new AbortController();
     axios
-      .get(`http://localhost:3030/${optionType}`)
+      .get(`http://localhost:3030/${optionType}`, { signal: controller.signal })
       .then((response) => setItems(response.data))
-      .catch(() => setError(true));
+      .catch((error) => {
+        if (error.name !== "CanceledError") setError(true);
+      });
+
+    return () => {
+      controller.abort();
+    };
   }, [optionType]);
 
   if (error) {
